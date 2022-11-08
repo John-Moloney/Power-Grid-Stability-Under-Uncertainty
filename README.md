@@ -1,5 +1,5 @@
 # Power-Grid-Under-Uncertainty
-MATLAB code to accompany "Optimisation of Power Grid Stability Under Uncertainty" accesible on [provide link].
+MATLAB code to accompany "Optimisation of Power Grid Stability Under Uncertainty" is accessible  on [provide link].
 
 This repository contains MATLAB code for running the simulated annealing under uncertainty algorithm which using the 'Simulated_Annealing_Under_Uncertainty_Sampling.m' scrip with the data specified in 'test_system_10_gen_distribution_uncertainty.m'.
 
