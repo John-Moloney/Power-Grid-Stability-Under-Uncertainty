@@ -3,7 +3,7 @@ MATLAB code to accompany "Optimisation of Power Grid Stability Under Uncertainty
 
 This repository contains MATLAB code for running the simulated annealing under uncertainty algorithm using the 'Simulated_Annealing_Under_Uncertainty_Sampling.m' scrip with the data specified in 'test_system_10_gen_distribution_uncertainty.m'.
 
-The 'Lambda_Distribution_Linear.m' script is used to generate lambda versus quantile distributions for a specified level of uncertainty.
+The 'Lambda_Distribution.m' script is used to generate lambda distributions and also plots lambda versus quantile values for a specified level of uncertainty.
 
 The 'test_system_10_gen_distribution_uncertainty.m' is adapted from the data provided by [1] with uncertainty included in each parameter. As mentioned in [1], this data file uses the case39.m file from the MATPOWER toolbox that is found in [2]. The dynamic parameters include the inertia constant, damping constant and internal reactance of each generator from [3].
 
