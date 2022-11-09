@@ -1,7 +1,5 @@
 function [mpc,Standard_Deviation] = test_system_10_gen_simulated_annealing_data
 
-% 10 clusters
-
 
 %TEST_SYSTEM_10GEN   10-generator test system.
 %   mpc = TEST_SYSTEM_10GEN generates data for the New England system
@@ -81,6 +79,7 @@ function [mpc,Standard_Deviation] = test_system_10_gen_simulated_annealing_data
 %   MATPOWER
 %   $Id: case39.m,v 1.14 2010/03/10 18:08:13 ray Exp $
 
+% Comments regarding copyright
 %
 % Copyright (C) 2015  Takashi Nishikawa
 % 
@@ -99,17 +98,19 @@ function [mpc,Standard_Deviation] = test_system_10_gen_simulated_annealing_data
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
 % USA.
 
-%   Last modified by Takashi Nishikawa on 1/22/2015
+% Last modified by John Moloney on 09/11/2022
 
-%% dynamic data added by T. Nishikawa on 8/1/2014
+%% dynamic data added by T. Nishikawa on 1/8/2014
+%% Dynamic data last altered by J. Moloney to include uncertainty on 09/11/2022
 mpc.ref_freq = 60;
 
-% The mean beta values for each generator
+% The mean beta values for each generator whereby the mean beta values
+% included are the optimal beta values if optimising in the absence of
+% uncertainty
 Beta_Mean = [12.8340, 13.5440, 9.7568, 12.6440, 12.2284, 7.0078, 10.3777, 8.0301, 8.2874, 5.8856];
 
 % The standard deviation for the beta distribution for each generator
 Standard_Deviation = 1;
-
 
 Beta_Standard_Deviation = zeros(length(Beta_Mean),1);
 for i = 1:10
@@ -152,12 +153,13 @@ mpc.version = '2';
 %% system MVA base
 mpc.baseMVA = 100;
 
-% Uncertainty in real and reactive power demand
+% Mean values for the real and reactive power demand
 P_D_Mean = [97.6, 0, 322, 500, 0, 0, 233.8, 522, 6.5, 0, 0, 8.53, 0, 0, 320, 329, 0, 158, 0, 680, 274,...
     0, 247.5, 308.6, 224, 139, 281, 206, 283.5, 0, 9.2, 0, 0, 0, 0, 0, 0, 0, 1104];
 Q_D_Mean = [44.2, 0, 2.4, 184, 0, 0, 84, 176.6, -66.6, 0, 0, 88, 0, 0, 153, 32.3, 0, 30, 0, 103, 115, 0,...
     84.6, -92.2, 47.2, 17, 75.5, 27.6, 26.9, 0, 4.6, 0, 0, 0, 0, 0, 0, 0, 0, 250];
 
+% Specifying the uncertainty in the real and reactive power demand
 Standard_Deviation_Demand = 1;
 P_D_Standard_Deviation = zeros(39,1);
 Q_D_Standard_Deviation = zeros(39,1);
@@ -169,6 +171,7 @@ end
 P_G = zeros(39,1);
 Q_G = zeros(39,1);
 
+% Creating distribuitons for the real and reactive power demand
 for i = 1:39
     P_G(i) = normrnd(P_D_Mean(i),P_D_Standard_Deviation(i));
     Q_G(i) = normrnd(Q_D_Mean(i),Q_D_Standard_Deviation(i));
@@ -218,10 +221,11 @@ mpc.bus = [
 	39	2	P_G(39)	Q_G(39)	0	0	1	1.03	-14.535256	345	1	1.06	0.94;
 ];
 
-% Uncertainty in real and reactive power output 
+% Mean values of the real and reactive power output 
 P_G_Mean = [250, 677.871, 650, 632, 508, 650, 560, 540, 830, 1000];
 Q_G_Mean = [161.762, 221.574, 206.965, 108.293, 166.688, 210.661, 100.165, -1.36945, 21.7327, 78.4674];
-% Standard_Deviation_Generator = 0;
+
+% Specifying the uncertainty the in real and reactive power output 
 Standard_Deviation_Generator = 1;
 P_G_Standard_Deviation = zeros(10,1);
 Q_G_Standard_Deviation = zeros(10,1);
@@ -233,6 +237,7 @@ end
 P_G = zeros(10,1);
 Q_G = zeros(10,1);
 
+% Creating distribuitons for the real and reactive power output 
 for i = 1:length(Beta_Mean)
     P_G(i) = normrnd(P_G_Mean(i),P_G_Standard_Deviation(i));
     Q_G(i) = normrnd(Q_G_Mean(i),Q_G_Standard_Deviation(i));
@@ -255,7 +260,7 @@ mpc.gen = [
 	39	P_G(10)	    Q_G(10)	300	   -100	1.03	100	1	1100	0	0	0	0	0	0	0	0	0	0	0	0;
 ];
 
-% Uncertainty in admittance
+% Mean values for the resistance and reactance
 R_Mean = [0.0035, 0.001, 0.0013, 0.007, 0, 0.0013, 0.0011, 0.0008, 0.0008, 0.0002, 0.0008, 0.0006, 0.0007,...
     0, 0.0004, 0.0023, 0.001, 0.0004, 0.0004, 0, 0.0016, 0.0016, 0.0009, 0.0018, 0.0009, 0.0007, 0.0016,...
     0.0008, 0.0003, 0.0007, 0.0013, 0.0007, 0.0007, 0.0009, 0.0008, 0.0006, 0, 0.0022, 0.0005, 0.0032,...
@@ -264,7 +269,8 @@ X_Mean = [0.0411, 0.025, 0.0151, 0.0086, 0.0181, 0.0213, 0.0133, 0.0128, 0.0129,
     0.0112, 0.0092, 0.0082, 0.025, 0.0046, 0.0363, 0.025, 0.0043, 0.0043, 0.02, 0.0435,...
     0.0435, 0.0101, 0.0217, 0.0094, 0.0089, 0.0195, 0.0135, 0.0059, 0.0082, 0.0173, 0.0138,...
     0.0142, 0.018, 0.014, 0.0096, 0.0143, 0.035, 0.0272, 0.0323, 0.0232, 0.0147, 0.0474, 0.0625, 0.0151, 0.0156];
-% Standard_Deviation_Admittance = 0;
+
+% Specifying the uncertainty in the resistance and reactance
 Standard_Deviation_Admittance = 0.001;
 R_Standard_Deviation = zeros(46,1);
 X_Standard_Deviation = zeros(46,1);
@@ -276,6 +282,7 @@ end
 R = zeros(46,1);
 X = zeros(46,1);
 
+% Creating distribuitons for the resistance and reactance
 for i = 1:46
     R(i) = normrnd(R_Mean(i),R_Standard_Deviation(i));
     X(i) = normrnd(X_Mean(i),X_Standard_Deviation(i));
